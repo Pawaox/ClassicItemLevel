@@ -1,7 +1,7 @@
 local level1 = 35; -- color1 used for >= this & < level2
-local level2 = 50; -- color2 used for >= this & < level3
-local level3 = 91; -- color3 used for >= this & < level4
-local level4 = 115; -- color4 used for >= this & < level5
+local level2 = 55; -- color2 used for >= this & < level3
+local level3 = 105; -- color3 used for >= this & < level4
+local level4 = 116; -- color4 used for >= this & < level5
 local level5 = 121; -- color5 used for the highest items (121+ in T4)
 
 local color1 = "ffffff"; -- White
