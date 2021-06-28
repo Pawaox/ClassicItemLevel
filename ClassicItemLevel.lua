@@ -1,8 +1,8 @@
-local threshold1Level = 35;
-local threshold2Level = 50;
-local threshold3Level = 91;
-local threshold4Level = 105;
-local threshold5Level = 121; -- >120 highest stuff in T4
+local level1 = 35; -- color1 used for >= this & < level2
+local level2 = 50; -- color2 used for >= this & < level3
+local level3 = 91; -- color3 used for >= this & < level4
+local level4 = 115; -- color4 used for >= this & < level5
+local level5 = 121; -- color5 used for the highest items (121+ in T4)
 
 local color1 = "ffffff"; -- White
 local color2 = "03E500"; -- Green
@@ -31,15 +31,15 @@ local function EventItem(itemLink, tooltipObj)
 		local color = "";
 		local showTooltip = 1;
 		
-		if itemLevel >= threshold5Level then
+		if itemLevel >= level5 then
 			color = color5;
-		elseif itemLevel >= threshold4Level then
+		elseif itemLevel >= level4 then
 			color = color4;
-		elseif itemLevel >= threshold3Level then
+		elseif itemLevel >= level3 then
 			color = color3;
-		elseif itemLevel >= threshold2Level then
+		elseif itemLevel >= level2 then
 			color = color2;
-		elseif itemLevel >= threshold1Level then
+		elseif itemLevel >= level1 then
 			color = color1;
 		else
 			showTooltip = 0;
