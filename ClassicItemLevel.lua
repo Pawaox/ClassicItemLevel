@@ -46,9 +46,9 @@ SlashCmdList["ITEMLEVEL"] = function(msg)
 	else
 		local splt = Split(msg, " ");
 		local p1 = string.lower(splt[1]);
-		local p2 = string.lower(tostring(splt[2]));
+		local p2 = string.lower(splt[2]);
 				
-		if tostring(p1) == "equip" then
+		if p1 == "equip" then
 			if ListHasValue(cmdWordsOn, p2) then
 				itemlevelSetting_AddonEnabled = true; -- User expectation would be addon turning on
 				itemlevelSettings_ShowEquipItemsOnly = true;
