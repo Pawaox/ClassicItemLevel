@@ -3,17 +3,19 @@ itemlevelSetting_AddonEnabled = nil;
 itemlevelSetting_ShowEquipItemsOnly = nil;
 
 --[Other Variables]
-local level1 = 35; -- color1 used for >= this & < level2
-local level2 = 55; -- color2 used for >= this & < level3
-local level3 = 105; -- color3 used for >= this & < level4
-local level4 = 116; -- color4 used for >= this & < level5
-local level5 = 121; -- color5 used for the highest items (121+ in T4)
+local level1 = 0; -- color1 used for >= this & < level2
+local level2 = 35; -- color2 used for >= this & < level3
+local level3 = 55; -- color3 used for >= this & < level4
+local level4 = 105; -- color4 used for >= this & < level5
+local level5 = 116; -- color5 used for >= this & < level6
+local level6 = 121; -- color6 used for the highest items (121+ in T4)
 
-local color1 = "ffffff"; -- White
-local color2 = "03E500"; -- Green
-local color3 = "62a2ff"; -- Blue
-local color4 = "FF12E6"; -- Purple
-local color5 = "FE8505"; -- Orange
+local color1 = "D3D3D3"; -- Gray
+local color2 = "FFFFFF"; -- White
+local color3 = "03E500"; -- Green
+local color4 = "62a2ff"; -- Blue
+local color5 = "FF12E6"; -- Purple
+local color6 = "FE8505"; -- Orange
 
 local cmdWordsOn = { "on", "enable", "yes", "y" };
 local cmdWordsOff = { "off", "disable", "no", "n" };
@@ -73,10 +75,11 @@ local function EventItem(itemLink, tooltipObj)
 			
 	if (itemlevelSetting_ShowEquipItemsOnly == true and isEquipItem == true) or itemlevelSetting_ShowEquipItemsOnly == false then
 		if itemLevel and itemLevel ~= nil then
-			local color = "FFFFFF"; -- Default White
+			local color = "FFFFFF"; -- Default to basic white
 			local validItemLevel = 1;
 			
-			if 		itemLevel >= level5 then color = color5;
+			if 		itemLevel >= level6 then color = color6;
+			elseif 	itemLevel >= level5 then color = color5;
 			elseif 	itemLevel >= level4 then color = color4;
 			elseif 	itemLevel >= level3 then color = color3;
 			elseif 	itemLevel >= level2 then color = color2;
