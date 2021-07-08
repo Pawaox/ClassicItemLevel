@@ -2,5 +2,5 @@
 ## Title: ClassicItemLevel
 ## Author: Pawaox
 ## Notes: Shows ItemLevel on item tooltips
-## SavedVariables: itemlevelSetting_AddonEnabled,itemlevelSettings_ShowEquipItemsOnly
+## SavedVariables: itemlevelSetting_AddonEnabled,itemlevelSetting_ShowEquipItemsOnly
 ClassicItemLevel.lua

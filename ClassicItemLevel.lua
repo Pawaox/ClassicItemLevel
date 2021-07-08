@@ -1,6 +1,6 @@
 --[Settings]
 itemlevelSetting_AddonEnabled = nil;
-itemlevelSettings_ShowEquipItemsOnly = nil;
+itemlevelSetting_ShowEquipItemsOnly = nil;
 
 --[Other Variables]
 local level1 = 35; -- color1 used for >= this & < level2
@@ -15,67 +15,30 @@ local color3 = "62a2ff"; -- Blue
 local color4 = "FF12E6"; -- Purple
 local color5 = "FE8505"; -- Orange
 
---[Helper Methods]
-local function Split(s, delimiter)
+local cmdWordsOn = { "on", "enable", "yes", "y" };
+local cmdWordsOff = { "off", "disable", "no", "n" };
+
+--[Helper Functions]
+local function Split(text, separator)
     result = {};
-    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
-        table.insert(result, match);
+    for part in (text .. separator):gmatch("(.-)" .. separator) do
+        table.insert(result, part);
     end
     return result;
 end
 local function ListHasValue(list, value)
     for index, listObj in ipairs(list) do
         if listObj == value then
-            return true
+            return true; -- exit immediately, save time
         end
     end
-    return false
+    return false;
+end
+local function NotifyUser(message)
+	print(tostring(message));
 end
 
---[Commands]
-local cmdWordsOn = { "on", "enable", "yes", "y" }
-local cmdWordsOff = { "off", "disable", "no", "n" }
-
-SLASH_ITEMLEVEL1 = "/itemlevel"
-SLASH_ITEMLEVEL2 = "/ilvl"
-SLASH_ITEMLEVEL3 = "/itemlvl"
-SlashCmdList["ITEMLEVEL"] = function(msg)
-	if msg == nil or msg == '' then --List commands
-		print("/ilvl 'on/off' will toggle levels being shown");
-		print("/ilvl equip 'on/off' will decide if only equippable items are shown");
-	else
-		local splt = Split(msg, " ");
-		local p1 = string.lower(splt[1]);
-		local p2 = string.lower(splt[2]);
-				
-		if p1 == "equip" then
-			if ListHasValue(cmdWordsOn, p2) then
-				itemlevelSetting_AddonEnabled = true; -- User expectation would be addon turning on
-				itemlevelSettings_ShowEquipItemsOnly = true;
-				print("ItemLevel 'EquipOnly' enabled");
-			elseif ListHasValue(cmdWordsOff, p2) then
-				itemlevelSettings_ShowEquipItemsOnly = false;
-				print("ItemLevel 'EquipOnly' disabled");
-			else
-				if itemlevelSettings_ShowEquipItemsOnly then
-					print("ItemLevel 'EquipOnly' is currently enabled");
-				else
-					print("ItemLevel 'EquipOnly' is currently disabled");
-				end
-			end
-		else
-			if ListHasValue(cmdWordsOn, p1) then
-				itemlevelSetting_AddonEnabled = true;
-				print("ItemLevel addon enabled");
-			elseif ListHasValue(cmdWordsOff, p1) then
-				itemlevelSetting_AddonEnabled = false;
-				print("ItemLevel addon disabled");
-			end
-		end
-	end
-end 
-
---[Functions]
+--[Addon Functions]
 local function GetItemLevelAndEquip(itemLink)
 	local isEquippableItem = false;
 	
@@ -87,7 +50,7 @@ local function GetItemLevelAndEquip(itemLink)
 	if not iLevel or iLevel == nil then
 		iLevel = -1;
 	end
-	if iEquipLoc ~= nil and iEquipLoc  ~= "" then
+	if iEquipLoc ~= nil and iEquipLoc ~= "" then
 		isEquippableItem = true;
 	end
 		
@@ -95,18 +58,20 @@ local function GetItemLevelAndEquip(itemLink)
 end
 
 local function EventItem(itemLink, tooltipObj)
-	if itemlevelSetting_AddonEnabled == false then return; end
+	if itemlevelSetting_AddonEnabled == false then
+		return; --Exit before doing anything
+	end
 	
 	local itemLevel, isEquipItem = GetItemLevelAndEquip(itemLink);
 	
 	if itemlevelSetting_AddonEnabled == nil then
 		itemlevelSetting_AddonEnabled = true;
 	end
-	if itemlevelSettings_ShowEquipItemsOnly == nil then
-		itemlevelSettings_ShowEquipItemsOnly = true;
+	if itemlevelSetting_ShowEquipItemsOnly == nil then
+		itemlevelSetting_ShowEquipItemsOnly = true;
 	end
 			
-	if (itemlevelSettings_ShowEquipItemsOnly == true and isEquipItem == true) or itemlevelSettings_ShowEquipItemsOnly == false then
+	if (itemlevelSetting_ShowEquipItemsOnly == true and isEquipItem == true) or itemlevelSetting_ShowEquipItemsOnly == false then
 		if itemLevel and itemLevel ~= nil then
 			local color = "FFFFFF"; -- Default White
 			local validItemLevel = 1;
@@ -125,6 +90,47 @@ local function EventItem(itemLink, tooltipObj)
 		end
 	end
 end
+
+--[Commands]
+SLASH_ITEMLEVEL1 = "/itemlevel"
+SLASH_ITEMLEVEL2 = "/ilvl"
+SLASH_ITEMLEVEL3 = "/itemlvl"
+SlashCmdList["ITEMLEVEL"] = function(msg)
+	if msg == nil or msg == '' then --List commands
+		NotifyUser("/ilvl 'on/off' will toggle levels being shown");
+		NotifyUser("/ilvl equip 'on/off' will decide if only equippable items are shown");
+	else
+		local parts = Split(msg, " ");
+		local p1 = string.lower(parts[1]);
+		local p2 = string.lower(parts[2]);
+				
+		if p1 == "equip" then
+			if ListHasValue(cmdWordsOn, p2) then
+				itemlevelSetting_AddonEnabled = true;
+				itemlevelSetting_ShowEquipItemsOnly = true;
+				NotifyUser("ItemLevel 'EquipOnly' enabled");
+			elseif ListHasValue(cmdWordsOff, p2) then
+				itemlevelSetting_AddonEnabled = true;
+				itemlevelSetting_ShowEquipItemsOnly = false;
+				NotifyUser("ItemLevel 'EquipOnly' disabled");
+			else
+				if itemlevelSetting_ShowEquipItemsOnly then
+					NotifyUser("ItemLevel 'EquipOnly' is currently enabled");
+				else
+					NotifyUser("ItemLevel 'EquipOnly' is currently disabled");
+				end
+			end
+		else
+			if ListHasValue(cmdWordsOn, p1) then
+				itemlevelSetting_AddonEnabled = true;
+				NotifyUser("ItemLevel addon enabled");
+			elseif ListHasValue(cmdWordsOff, p1) then
+				itemlevelSetting_AddonEnabled = false;
+				NotifyUser("ItemLevel addon disabled");
+			end
+		end
+	end
+end 
 
 --[Event Wrappers]
 local function EventSetItem()
@@ -146,7 +152,7 @@ local function EventSetItemCompare2()
 end
 
 --[Tooltip Hooks]
-GameTooltip:HookScript("OnTooltipSetItem", EventSetItem)
-ItemRefTooltip:HookScript("OnTooltipSetItem", EventSetItemRef)
-ShoppingTooltip1:HookScript("OnTooltipSetItem", EventSetItemCompare1)
-ShoppingTooltip2:HookScript("OnTooltipSetItem", EventSetItemCompare2)
+GameTooltip:HookScript("OnTooltipSetItem", EventSetItem);
+ItemRefTooltip:HookScript("OnTooltipSetItem", EventSetItemRef);
+ShoppingTooltip1:HookScript("OnTooltipSetItem", EventSetItemCompare1);
+ShoppingTooltip2:HookScript("OnTooltipSetItem", EventSetItemCompare2);
