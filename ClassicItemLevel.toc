@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 30401
 ## Title: ClassicItemLevel
 ## Author: Pawaox
 ## Notes: Shows ItemLevel on item tooltips

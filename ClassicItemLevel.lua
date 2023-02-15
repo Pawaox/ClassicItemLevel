@@ -4,18 +4,23 @@ itemlevelSetting_ShowEquipItemsOnly = nil;
 
 --[Other Variables]
 local level1 = 0; -- color1 used for >= this & < level2
-local level2 = 35; -- color2 used for >= this & < level3
-local level3 = 55; -- color3 used for >= this & < level4
-local level4 = 105; -- color4 used for >= this & < level5
-local level5 = 116; -- color5 used for >= this & < level6
-local level6 = 121; -- color6 used for the highest items (121+ in T4)
+local level2 = 60; -- color2 used for >= this & < level3
+local level3 = 134; -- color3 used for >= this & < level4
+local level4 = 200; -- color4 used for >= this & < level5
+local level5 = 225; -- color5 used for >= this & < level6
+local level6 = 246; -- color6 used for the few highest items
+local level7 = 258; -- color7 used legendaries/specials
+--T4: 0, 35, 55, 105, 116, 121
+--T8: 0, 60, 134, 200, 225, 246, 258
 
+local colorDefault = "FFFFFF"; --Used for unknown cases
 local color1 = "D3D3D3"; -- Gray
 local color2 = "FFFFFF"; -- White
 local color3 = "03E500"; -- Green
-local color4 = "62a2ff"; -- Blue
-local color5 = "FF12E6"; -- Purple
+local color4 = "0070DD"; -- Blue
+local color5 = "A335EE"; -- Purple
 local color6 = "FE8505"; -- Orange
+local color7 = "E6CC80"; -- Light Gold
 
 local cmdWordsOn = { "on", "enable", "yes", "y" };
 local cmdWordsOff = { "off", "disable", "no", "n" };
@@ -31,7 +36,7 @@ end
 local function ListHasValue(list, value)
     for index, listObj in ipairs(list) do
         if listObj == value then
-            return true; -- exit immediately, save time
+            return true; -- exit immediately to save time
         end
     end
     return false;
@@ -75,10 +80,11 @@ local function EventItem(itemLink, tooltipObj)
 			
 	if (itemlevelSetting_ShowEquipItemsOnly == true and isEquipItem == true) or itemlevelSetting_ShowEquipItemsOnly == false then
 		if itemLevel and itemLevel ~= nil then
-			local color = "FFFFFF"; -- Default to basic white
+			local color = colorDefault;
 			local validItemLevel = 1;
 			
-			if 		itemLevel >= level6 then color = color6;
+			if 		itemLevel >= level7 then color = color7;
+			elseif 	itemLevel >= level6 then color = color6;
 			elseif 	itemLevel >= level5 then color = color5;
 			elseif 	itemLevel >= level4 then color = color4;
 			elseif 	itemLevel >= level3 then color = color3;
@@ -100,8 +106,8 @@ SLASH_ITEMLEVEL2 = "/ilvl"
 SLASH_ITEMLEVEL3 = "/itemlvl"
 SlashCmdList["ITEMLEVEL"] = function(msg)
 	if msg == nil or msg == '' then --List commands
-		NotifyUser("/ilvl 'on/off' will toggle levels being shown");
-		NotifyUser("/ilvl equip 'on/off' will decide if only equippable items are shown");
+		NotifyUser("/ilvl 'on/off' to enable or disable display of itemlevels");
+		NotifyUser("/ilvl equip 'on/off' to change if itemlevels should only be shown for equippable items");
 	else
 		local parts = Split(msg, " ");
 		local p1 = string.lower(parts[1]);
@@ -140,7 +146,6 @@ local function EventSetItem()
 	local iName, iLink = GameTooltip:GetItem();
 	EventItem(iLink, GameTooltip);
 end
-
 local function EventSetItemRef()
 	local iName, iLink = ItemRefTooltip:GetItem(); 
 	EventItem(iLink, ItemRefTooltip);
