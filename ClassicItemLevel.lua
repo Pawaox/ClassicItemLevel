@@ -111,7 +111,10 @@ SlashCmdList["ITEMLEVEL"] = function(msg)
 	else
 		local parts = Split(msg, " ");
 		local p1 = string.lower(parts[1]);
-		local p2 = string.lower(parts[2]);
+		local p2 = "";
+		if parts[2] ~= nil then 
+			p2 = string.lower(parts[2]);
+		end
 				
 		if p1 == "equip" then
 			if ListHasValue(cmdWordsOn, p2) then
