@@ -6,16 +6,10 @@ local _c={}--cache
 
 local function Chat(message) print("|cFF4FC0C4[ClassicItemLevel]:|r |cFF40C24F"..tostring(message).."|r") end
 local function Display(itm,ttObj)
-	if SV_ilvl[_s1]==false then
-		return
-	end
+	if SV_ilvl[_s1]==false then return end
     local rarity,lvl,_,_,_,_,ieq=select(3, C_Item.GetItemInfo(itm))
 	local iEquip=(ieq~=nil and ieq~="" and ieq~="INVTYPE_NON_EQUIP_IGNORE")
-	local eqOn=SV_ilvl[_s2]
-	if eqOn==nil then
-		eqOn=true
-	end
-	if (eqOn and iEquip) or not eqOn then
+	if SV_ilvl[_s2]==false or iEquip then
 		if lvl and lvl>=0 then
 			local clr="|cFFFFFFFF"
 			if SV_ilvl[_s3]~=false and rarity and rarity>0 then
