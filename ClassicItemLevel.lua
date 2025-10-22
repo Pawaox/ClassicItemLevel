@@ -13,9 +13,7 @@ local function Display(itm,ttObj)
 		if lvl and lvl>=0 then
 			local clr="|cFFFFFFFF"
 			if SV_ilvl[_s3]~=false and rarity and rarity>0 then
-				if _c[rarity] then
-					clr=_c[rarity]
-				else
+				if _c[rarity] then clr=_c[rarity] else
 					local r,g,b=C_Item.GetItemQualityColor(rarity)
 					clr=string.format("|cFF%02x%02x%02x",r*255,g*255,b*255)
 					_c[rarity]=clr
