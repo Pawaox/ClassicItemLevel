@@ -1,0 +1,7 @@
+## Interface: 11508, 20504, 30405, 40402, 50501, 50502
+## Title: LightweightItemLevel
+## Author: Pawaox
+## Notes: Shows ItemLevel on item tooltips
+## SavedVariables: LWItemlevelSettings
+## X-Curse-Project-ID: 498648
+LightweightItemLevel.lua
