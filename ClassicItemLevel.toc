@@ -1,0 +1,7 @@
+## Interface: 11508, 20504, 30405, 40402, 50501, 50502
+## Title: ClassicItemLevel
+## Author: Pawaox
+## Notes: Shows ItemLevels on item tooltips
+## SavedVariables: SV_ilvl
+## X-Curse-Project-ID: 498648
+ClassicItemLevel.lua
