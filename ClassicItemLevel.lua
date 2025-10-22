@@ -28,7 +28,7 @@ end
 local function GetItemLevelAndEquip(itemLink)
     if itemLink==nil then return -1 end
     local iRarity,iLevel,_,_,_,_,iEquipLoc=select(3, C_Item.GetItemInfo(itemLink))
-    return iLevel or -1,iRarity or 1,(iEquipLoc~=nil and iEquipLoc~="")
+    return iLevel or -1,iRarity or 1,(iEquipLoc~=nil and iEquipLoc~="" and iEquipLoc~="INVTYPE_NON_EQUIP_IGNORE")
 end
 local function EventItem(itemLink,tooltipObj)
 	if SV_ilvl[sEnabled]==false then
