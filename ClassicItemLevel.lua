@@ -25,7 +25,7 @@ local function Display(itm,ttObj)
 		end
 	end
 end
-local function Command(s,val,tPre,tOn,tOff,tsOn,tsOff,turnOn,eCheck)
+local function Command(s,val,tPre,tOn,tOff,tsOn,tsOff,turnOn)
 	if (val=="on" or val=="enable" or val=="yes" or val=="y") then
 		SV_ilvl[s]=true
 		if turnOn then SV_ilvl[_s1]=true end
@@ -34,7 +34,7 @@ local function Command(s,val,tPre,tOn,tOff,tsOn,tsOff,turnOn,eCheck)
 		SV_ilvl[s]=false
 		if turnOn then SV_ilvl[_s1]=true end
 		Chat(tPre..tOff)
-	elseif eCheck==true then
+	elseif turnOn==true then
 		if SV_ilvl[s]==nil and true or SV_ilvl[s] then
 			Chat(tPre..tsOn)
 		else
@@ -56,11 +56,11 @@ SlashCmdList["CITEMLEVEL"]=function(msg)
 		p1=p1 and p1:lower() or ""
 		p2=p2~="" and p2:lower() or nil
 		if p1=="equip" then
-			Command(_s2,p2,"'EquipOnly' ","on","off","is on","is off",true,true)
+			Command(_s2,p2,"'EquipOnly' ","on","off","is on","is off",true)
 		elseif p1=="color" or p1=="colour" or p1=="colors" or p1=="colours" then
-			Command(_s3,p2,"Colors ","on","off","are on","are off",true,true)
+			Command(_s3,p2,"Colors ","on","off","are on","are off",true)
 		else
-			Command(_s1,p1,"Display is ","on","off",nil,nil,false,false)
+			Command(_s1,p1,"Display is ","on","off",nil,nil,false)
 		end
 	end
 end
